@@ -223,7 +223,7 @@ SIGINTInterruptCheckProcess()
 		HiveJDBCUtilsClass = (*env)->FindClass(env, "HiveJDBCUtils");
 		if (HiveJDBCUtilsClass == NULL)
 		{
-			elog(ERROR, "HiveJDBCUtilsClass is NULL");
+			elog(ERROR, "226: HiveJDBCUtilsClass is NULL");
 		}
 
 		id_cancel = (*env)->GetMethodID(env, HiveJDBCUtilsClass, "Cancel", "()Ljava/lang/String;");
@@ -384,6 +384,7 @@ JVMInitialization(Oid serveroid)
 					 ));
 		}
 
+		//elog(INFO, res);
 		InterruptFlag = false;
 		/* Register an on_proc_exit handler that shuts down the JVM. */
 		on_proc_exit(DestroyJVM, 0);
@@ -855,7 +856,7 @@ hiveBeginForeignScan(ForeignScanState *node, int eflags)
 	HiveJDBCUtilsClass = (*env)->FindClass(env, "HiveJDBCUtils");
 	if (HiveJDBCUtilsClass == NULL)
 	{
-		elog(ERROR, "HiveJDBCUtilsClass is NULL");
+		elog(ERROR, "857:HiveJDBCUtilsClass is NULL");
 	}
 
 	id_initialize = (*env)->GetMethodID(env, HiveJDBCUtilsClass, "Execute_Query", "(Ljava/lang/String;)Ljava/lang/String;");
@@ -923,7 +924,7 @@ hiveIterateForeignScan(ForeignScanState *node)
 	HiveJDBCUtilsClass = (*env)->FindClass(env, "HiveJDBCUtils");
 	if (HiveJDBCUtilsClass == NULL)
 	{
-		elog(ERROR, "HiveJDBCUtilsClass is NULL");
+		elog(ERROR, "926:HiveJDBCUtilsClass is NULL");
 	}
 
 	id_returnresultset = (*env)->GetMethodID(env, HiveJDBCUtilsClass, "ReturnResultSet", "()[Ljava/lang/String;");
@@ -997,7 +998,7 @@ hiveEndForeignScan(ForeignScanState *node)
 	HiveJDBCUtilsClass = (*env)->FindClass(env, "HiveJDBCUtils");
 	if (HiveJDBCUtilsClass == NULL)
 	{
-		elog(ERROR, "HiveJDBCUtilsClass is NULL");
+		elog(ERROR, "1000:HiveJDBCUtilsClass is NULL");
 	}
 
 	id_close = (*env)->GetMethodID(env, HiveJDBCUtilsClass, "Close", "()Ljava/lang/String;");
@@ -1305,7 +1306,7 @@ hiveImportForeignSchema(ImportForeignSchemaStmt *stmt, Oid serveroid)
 	HiveJDBCUtilsClass = (*env)->FindClass(env, "HiveJDBCUtils");
 	if (HiveJDBCUtilsClass == NULL)
 	{
-		elog(ERROR, "HiveJDBCUtilsClass is NULL");
+		elog(ERROR, "1308:HiveJDBCUtilsClass is NULL");
 	}
 
 	id_initialize = (*env)->GetMethodID(env, HiveJDBCUtilsClass, "PrepareDDLStmtList", "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;");
@@ -1386,6 +1387,7 @@ hiveGetConnection(char *svr_username, char *svr_password, char *svr_host, int sv
 	char	   *svr_url = NULL;
 	hiveFdwExecutionState *festate = NULL;
 	jclass		HiveJDBCUtilsClass;
+	//jclass		HiveJDBCLoaderClass;
 	jclass		JavaString;
 	jstring		StringArray[7];
 	jstring		initialize_result = NULL;
@@ -1405,7 +1407,7 @@ hiveGetConnection(char *svr_username, char *svr_password, char *svr_host, int sv
 	var_CP = getenv("HIVE_FDW_CLASSPATH");
 	if (!var_CP)
 	{
-		elog(ERROR, "Please set the environment variable HIVE_FDW_CLASSPATH");
+		elog(ERROR, "请设置环境变量 HIVE_FDW_CLASSPATH");
 	}
 	cp_len = strlen(var_CP) + 2;
 	jar_classpath = (char *) palloc(cp_len);
@@ -1430,16 +1432,15 @@ hiveGetConnection(char *svr_username, char *svr_password, char *svr_host, int sv
 
 	elog(DEBUG3, HIVE_FDW_NAME ": connection url is %s", svr_url);
 
-
 	/* Stash away the state info we have already */
 	festate = (hiveFdwExecutionState *) palloc(sizeof(hiveFdwExecutionState));
-
 	/* Connect to the server and execute the query */
 	HiveJDBCUtilsClass = (*env)->FindClass(env, "HiveJDBCUtils");
 	if (HiveJDBCUtilsClass == NULL)
 	{
-		elog(ERROR, "HiveJDBCUtilsClass is NULL");
+		elog(ERROR, "1441:HiveJDBCUtils 类没有发现！异常。");
 	}
+	
 
 	id_initialize = (*env)->GetMethodID(env, HiveJDBCUtilsClass, "ConnInitialize", "([Ljava/lang/String;)Ljava/lang/String;");
 	if (id_initialize == NULL)

@@ -1,24 +1,14 @@
 # Hive_FDW
 
-Foreign Data Wrapper (FDW) that facilitates access to Hive Big Data Distributed Queries from within PostgreSQL.
 
+基于postgresql 封装的查询hive 库的组件。
+pgsql  版本9.1以上
 
-## Key Features ##
-
-- [*JOIN PUSHDOWN*](JOIN_PUSHDOWN.md)
-- [*IMPORT FOREIGN SCHEMA*](IMPORT_FOREIGN_SCHEMA.md)
-- [*JOIN DATATYPES*](DATATYPES.md)
-- [*JOIN LOGGING*](LOGGING.md)
-- [*EXAMPLE USING PRESTO*](PRESTO_INSTRUCTIONS.md)
-- [*EXAMPLE USING HDP ON SANDBOX*](HDP_SANDBOX_INSTRUCTIONS.md)
 
 
 ## Prepare
 
-In addition to normal PostgreSQL FDW pre-reqs, the primary specific
-requirements for this FDW are a JDK (we test with OpenJDK 8 & 11) and a set of
-Hive client JAR files for the Hadoop distribution you are connecting
-with.
+jdk要求1.8 以上。并确保当前机器可以与hive库联通。
 
 ## Building from Source
 
@@ -49,7 +39,8 @@ These environment variables are read at JVM initialization time.
 
     PGHOME = Path to the PostgreSQL installation. 
     HIVECLIENT_JAR_HOME = The path containing the Hive JDBC client jar files required for the FDW to run successfully.
-    HIVE_FDW_CLASSPATH = .:$(echo $HIVECLIENT_JAR_HOME/*.jar |  tr ' ' :):/PathToFile/hadoop-core-1.2.1.jar
+    配置环境变量
+	export HIVE_FDW_CLASSPATH=/usr/local/pgsql/lib/hive_fdw.jar:$(echo /opt/hive/hive-client-lib/*.jar | tr ' ' :)
 
 ## Usage
 
