@@ -5,7 +5,6 @@
 pgsql  版本9.1以上
 
 
-
 ## Prepare
 
 jdk要求1.8 以上。并确保当前机器可以与hive库联通。
@@ -39,8 +38,8 @@ These environment variables are read at JVM initialization time.
 
     PGHOME = Path to the PostgreSQL installation. 
     HIVECLIENT_JAR_HOME = The path containing the Hive JDBC client jar files required for the FDW to run successfully.
-    配置环境变量
-	export HIVE_FDW_CLASSPATH=/usr/local/pgsql/lib/hive_fdw.jar:$(echo /opt/hive/hive-client-lib/*.jar | tr ' ' :)
+     
+    配置环境变量 export HIVE_FDW_CLASSPATH=/usr/local/pgsql/lib/hive_fdw.jar:$(echo /opt/hive/hive-client-lib/*.jar | tr ' ' :)
 
 ## Usage
 
